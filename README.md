@@ -48,26 +48,32 @@ If you use another Drawtext like cd_drawtextui for example change the following 
 
 **Before** DRAWTEXT
 ```
-        exports['qb-core']:DrawText(Config.Text['MiningAlert'], 'left')
+exports['qb-core']:DrawText(Config.Text['MiningAlert'], 'left')
 
-        exports['qb-core']:DrawText(Config.Text['StartMining'],'left')
+exports['qb-core']:DrawText(Config.Text['StartMining'],'left')
 ```
 
 **After**
 ```
-		TriggerEvent('cd_drawtextui:ShowUI', 'show', Config.Text['MiningAlert'])
+TriggerEvent('cd_drawtextui:ShowUI', 'show', Config.Text['MiningAlert'])
 		
-		TriggerEvent('cd_drawtextui:ShowUI', 'show', Config.Text['StartMining'])
+TriggerEvent('cd_drawtextui:ShowUI', 'show', Config.Text['StartMining'])
 ```
 
 **Before** HIDETEXT
 ```
-		exports['qb-core']:HideText()
+exports['qb-core']:HideText()
 ```
 
 **After**
 ```
-        TriggerEvent('cd_drawtextui:HideUI')
+TriggerEvent('cd_drawtextui:HideUI')
+```
+
+**You will also need to remove this line if you are using CD_Drawtextui** 
+**Line 160**
+```
+exports['qb-core']:KeyPressed()
 ```
 
 ## **Drawtext Ui Files will be provided if you don't have it installed in your core**

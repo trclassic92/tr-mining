@@ -177,22 +177,28 @@ end
 RegisterNetEvent('tr-mining:washingrocks', function()
   QBCore.Functions.TriggerCallback('tr-mining:washpan', function(washingpancheck)
     if washingpancheck then
-      local playerPed = PlayerPedId()
-      local coords = GetEntityCoords(playerPed)
-      local rockwash = MiningJob.WashingTimer
-      TaskStartScenarioInPlace(playerPed, 'WORLD_HUMAN_BUM_WASH', 0, false)
-      QBCore.Functions.Progressbar('Washing Stones', Config.Text['Washing_Rocks'], rockwash, false, true, { -- Name | Label | Time | useWhileDead | canCancel
-      disableMovement = true,
-      disableCarMovement = true,
-      disableMouse = false,
-      disableCombat = true,
-    }, {
-    }, {}, {}, function() 
-        ClearPedTasks(PlayerPedId())
-        TriggerServerEvent("tr-mining:receivedReward")
-    end, function() 
-      QBCore.Functions.Notify(Config.Text['cancel'], "error")
-    end)
+      QBCore.Functions.TriggerCallback('tr-mining:stonesbruf', function(stonesbruf)
+        if stonesbruf then
+          local playerPed = PlayerPedId()
+          local coords = GetEntityCoords(playerPed)
+          local rockwash = MiningJob.WashingTimer
+          TaskStartScenarioInPlace(playerPed, 'WORLD_HUMAN_BUM_WASH', 0, false)
+            QBCore.Functions.Progressbar('Washing Stones', Config.Text['Washing_Rocks'], rockwash, false, true, { -- Name | Label | Time | useWhileDead | canCancel
+            disableMovement = true,
+            disableCarMovement = true,
+            disableMouse = false,
+            disableCombat = true,
+          }, {
+          }, {}, {}, function() 
+              ClearPedTasks(PlayerPedId())
+              TriggerServerEvent("tr-mining:receivedReward")
+          end, function() 
+            QBCore.Functions.Notify(Config.Text['cancel'], "error")
+          end)
+        elseif not stonesbruf then
+          QBCore.Functions.Notify(Config.Text['error_minerstone'], "error")
+        end
+      end)
     elseif not washingpancheck then
       Wait(500)
       QBCore.Functions.Notify(Config.Text['error_washpan'], "error", 3000)

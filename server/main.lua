@@ -116,6 +116,17 @@ RegisterNetEvent('tr-mining:setMiningStage', function(stage, state, k)
     TriggerClientEvent('tr-mining:getMiningstage', -1, stage, state, k)
 end)
 
+QBCore.Functions.CreateCallback('tr-mining:stonesbruf', function(source, cb)
+    local Player = QBCore.Functions.GetPlayer(source)
+    if Player ~= nil then
+        if Player.Functions.GetItemByName("mining_stone") ~= nil then
+            cb(true)
+        else
+            cb(false)
+        end
+    end
+end)
+
 
 RegisterNetEvent('tr-mining:setMiningTimer', function()
     if not mining then
