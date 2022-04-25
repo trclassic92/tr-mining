@@ -15,65 +15,13 @@ Mining Script for ESX
 
 ## Installation
 
-Add the item to your **qb-core/shared/item.lua**
-```
--- Mining
-	['mining_pickaxe'] 			     = {['name'] = 'mining_pickaxe', 				['label'] = 'Mining Pickaxe', 			['weight'] = 500, 		['type'] = 'item', 		['image'] = 'mining_pickaxe.png', 			['unique'] = true, 			['useable'] = true, 	['shouldClose'] = true,	   ['combinable'] = nil,   ['description'] = 'Classic\'s pickaxe for mining'},
-	['mining_pan'] 			    	 = {['name'] = 'mining_pan', 					['label'] = 'Washing Pan', 				['weight'] = 500, 		['type'] = 'item', 		['image'] = 'mining_pan.png', 				['unique'] = true, 			['useable'] = true, 	['shouldClose'] = true,	   ['combinable'] = nil,   ['description'] = 'Classic\'s washing pan'},
-	['mining_stone'] 			     = {['name'] = 'mining_stone', 					['label'] = 'Mined Stone', 				['weight'] = 500, 		['type'] = 'item', 		['image'] = 'mining_stone.png', 			['unique'] = false, 		['useable'] = true, 	['shouldClose'] = true,	   ['combinable'] = nil,   ['description'] = 'Mined Stone'},
-	['mining_washedstone'] 			 = {['name'] = 'mining_washedstone', 			['label'] = 'Washed Stone', 			['weight'] = 500, 		['type'] = 'item', 		['image'] = 'mining_washedstone.png', 		['unique'] = false, 		['useable'] = true, 	['shouldClose'] = true,	   ['combinable'] = nil,   ['description'] = 'Wasted Stone'},
-	['mining_ironfragment'] 		 = {['name'] = 'mining_ironfragment', 			['label'] = 'Iron Fragment', 			['weight'] = 500, 		['type'] = 'item', 		['image'] = 'mining_ironfragment.png', 		['unique'] = false, 		['useable'] = true, 	['shouldClose'] = true,	   ['combinable'] = nil,   ['description'] = 'Iron fragment from mining'},
-	['mining_ironbar'] 				 = {['name'] = 'mining_ironbar', 				['label'] = 'Iron Bar', 				['weight'] = 500, 		['type'] = 'item', 		['image'] = 'mining_ironbar.png', 			['unique'] = false, 		['useable'] = true, 	['shouldClose'] = true,	   ['combinable'] = nil,   ['description'] = 'Iron Bar'},
-	['mining_goldnugget'] 			 = {['name'] = 'mining_goldnugget', 			['label'] = 'Golden Nugget', 			['weight'] = 500, 		['type'] = 'item', 		['image'] = 'mining_goldnugget.png', 		['unique'] = false, 		['useable'] = true, 	['shouldClose'] = true,	   ['combinable'] = nil,   ['description'] = 'Golden nugget from mining'},
-	['mining_goldbar'] 				 = {['name'] = 'mining_goldbar', 				['label'] = 'Gold Bar', 				['weight'] = 500, 		['type'] = 'item', 		['image'] = 'mining_goldbar.png', 			['unique'] = false, 		['useable'] = true, 	['shouldClose'] = true,	   ['combinable'] = nil,   ['description'] = 'Gold Bar'},
-	['mining_copperfragment'] 		 = {['name'] = 'mining_copperfragment', 		['label'] = 'Copper Fragment', 			['weight'] = 500, 		['type'] = 'item', 		['image'] = 'mining_copperfragment.png', 	['unique'] = false, 		['useable'] = true, 	['shouldClose'] = true,	   ['combinable'] = nil,   ['description'] = 'Copper fragment from mining'},
-	['mining_copperbar'] 			 = {['name'] = 'mining_copperbar', 				['label'] = 'Copper Bar', 				['weight'] = 500, 		['type'] = 'item', 		['image'] = 'mining_copperbar.png', 		['unique'] = false, 		['useable'] = true, 	['shouldClose'] = true,	   ['combinable'] = nil,   ['description'] = 'Copper Bar'},
-
-```
-For images move the images from the img folder to your inventory image folder **qb-inventory/html/images**
-
-If you use another Drawtext like cd_drawtextui for example change the following in the **client/main.lua 287 - 296**
-
-**Before** DRAWTEXT
-```
-exports['qb-core']:DrawText(Config.Text['MiningAlert'], 'left')
-
-exports['qb-core']:DrawText(Config.Text['StartMining'],'left')
-```
-
-**After**
-```
-TriggerEvent('cd_drawtextui:ShowUI', 'show', Config.Text['MiningAlert'])
-		
-TriggerEvent('cd_drawtextui:ShowUI', 'show', Config.Text['StartMining'])
-```
-
-**Before** HIDETEXT
-```
-exports['qb-core']:HideText()
-```
-
-**After**
-```
-TriggerEvent('cd_drawtextui:HideUI')
-```
-
-**You will also need to remove this line if you are using CD_Drawtextui** 
-**Line 160**
-```
-exports['qb-core']:KeyPressed()
-```
-
-## **Drawtext Ui Files will be provided if you don't have it installed in your core**
-- [QBCore_Drawtext](https://github.com/trclassic92/QBCore_Drawtext) **Only add if you dont have the lastest core update**
-
 
 ## Preview Pictures
 - [Youtube Video](https://youtu.be/9VXjTrUdjfc)
 ![Preview Screenshot](https://i.imgur.com/jIJ9SOU.png)
 ![Preview Screenshot](https://i.imgur.com/mu0gNQC.jpeg)
-![Preview Screenshot](https://i.imgur.com/7gKe9wE.jpeg)
-![Preview Screenshot](https://i.imgur.com/cGaTg3V.jpeg)
+![Preview Screenshot](![image](https://user-images.githubusercontent.com/102178921/165142626-75b1e6ba-4c4b-415f-b4f5-edb3a678064d.png))
+![Preview Screenshot](![image](https://user-images.githubusercontent.com/102178921/165142476-1c5ea064-c3e0-4744-9f25-4868717a72e1.png))
 ![Preview Screenshot](https://i.imgur.com/my22yZL.jpeg)
 ![Preview Screenshot](https://i.imgur.com/fUQ61Bl.jpeg)
 ![Preview Screenshot](https://i.imgur.com/S382wMf.jpeg)
