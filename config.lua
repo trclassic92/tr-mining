@@ -4,49 +4,51 @@ Config.UseBlips = true                                              -- True / fa
 Config.Timeout = 20 * (60 * 1000)                                   -- 20 minutes
 
 --Blips Config
+Config.Blips = {
 MiningLocation = {
     targetZone = vector3(-600.57, 2092.49, 130.33),                 -- qb-target vector
     targetHeading = 273.47,                                         -- qb-target box zone
     coords = vector4(-600.57, 2092.49, 130.33, 339.52),             -- Move Location (Ped and blip)
-    SetBlipSprite = 414,                                            -- Blip Icon (https://docs.fivem.net/docs/game-references/blips/)
-    SetBlipDisplay = 6,                                             -- Blip Behavior (https://docs.fivem.net/natives/?_0x9029B2F3DA924928)
-    SetBlipScale = 0.85,                                            -- Blip Size
-    SetBlipColour = 21,                                             -- Blip Color
-    BlipLabel = "Mine Shaft",                                       -- Blip Label
+    Sprite = 414,                                            -- Blip Icon (https://docs.fivem.net/docs/game-references/blips/)
+    Display = 6,                                             -- Blip Behavior (https://docs.fivem.net/natives/?_0x9029B2F3DA924928)
+    Scale = 0.85,                                            -- Blip Size
+    Colour = 21,                                             -- Blip Color
+    Label = "Mine Shaft",                                       -- Blip Label
     minZ = 129.42,                                                  -- Max Z
     maxZ = 132.42,                                                  -- Max Z
-}
+},
 WashLocation = {
     targetZone = vector3(77.17, 3150.86, 28.79),
     targetHeading = 80.46,
     coords = vector4(77.17, 3150.86, 28.79, 80.46),
-    SetBlipSprite = 162,
-    SetBlipDisplay = 6,
-    SetBlipScale = 0.85,
-    SetBlipColour = 26,
-    BlipLabel = "Mine Washing Location",
+    Sprite = 162,
+    Display = 6,
+    Scale = 0.85,
+    Colour = 26,
+    Label = "Mine Washing Location",
     minZ = 27,
     maxZ = 31,
-}
+},
 SmeltLocation = {
     coords = vector4(1090.11, -1991.51, 32.27, 56.22),
-    SetBlipSprite = 162,
-    SetBlipDisplay = 6,
-    SetBlipScale = 0.85,
-    SetBlipColour = 36,
-    BlipLabel = "Smelt Factory",
-}
+    Sprite = 162,
+    Display = 6,
+    Scale = 0.85,
+    Colour = 36,
+    Label = "Smelt Factory",
+},
 SellLocation = {
     targetZone = vector3(579.11, -2804.96, 5.06),
     targetHeading = 242.63,
     coords = vector4(579.11, -2804.96, 5.06, 242.63),
-    SetBlipSprite = 431,
-    SetBlipDisplay = 6,
-    SetBlipScale = 0.85,
-    SetBlipColour = 28,
-    BlipLabel = "Material Seller",
+    Sprite = 431,
+    Display = 6,
+    Scale = 0.85,
+    Colour = 28,
+    Label = "Material Seller",
     minZ = 3,
     maxZ = 7,
+},
 }
 --Job Config
 MiningJob = {
@@ -93,8 +95,6 @@ MiningJob = {
     GoldBarsMax = 2,
 }
 
-
-vector4(77.17, 3150.86, 29.79, 80.46)
 Config.MiningLocation = {
     [1] = {
         ["coords"] = vector3(-590.57, 2073.85, 131.3),
@@ -174,30 +174,14 @@ Config.MiningLocation = {
 }
 
 Config.Sell = {
-    ["mining_washedstone"] = {
-        ["price"] = math.random(5, 10)                             -- Seller Price
-    },
-    ["mining_stone"] = {
-        ["price"] = 2
-    },
-    ["mining_ironfragment"] = {
-        ["price"] = math.random(35, 45)
-    },
-    ["mining_ironbar"] = {
-        ["price"] = math.random(75, 90)
-    },
-    ["mining_goldnugget"] = {
-        ["price"] = math.random(75, 80)
-    },
-    ["mining_goldbar"] = {
-        ["price"] = math.random(110, 125)
-    },
-    ["mining_copperfragment"] = {
-        ["price"] = math.random(25, 35)
-    },
-    ["mining_copperbar"] = {
-        ["price"] = math.random(50, 65)
-    },
+    mining_washedstone = math.random(5, 10),                             -- Seller Price
+    mining_stone = math.random(10, 20),
+    mining_ironfragment = math.random(35, 45),
+    mining_ironbar = math.random(75, 90),
+    mining_goldnugget = math.random(60, 70),
+    mining_goldbar  = math.random(120, 200),
+    mining_copperfragment = math.random(25, 35),
+    mining_copperbar = math.random(50, 65),
 }
 
 --- Config Alerts

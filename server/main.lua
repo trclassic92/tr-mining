@@ -1,4 +1,3 @@
-local QBCore = exports['qb-core']:GetCoreObject()
 local mining = false
 
 MiningMaterial = {
@@ -8,44 +7,42 @@ MiningMaterial = {
     {'mining_goldnugget', math.random(MiningJob.GoldNugMin, MiningJob.GoldNugMax)},                     -- Rare
 }
 
-RegisterNetEvent('tr-mining:Seller', function()
+RegisterNetEvent('esx-mining:Seller', function()
     local source = source
     local price = 0
-    local Player = QBCore.Functions.GetPlayer(source)
-    if Player.PlayerData.items ~= nil and next(Player.PlayerData.items) ~= nil then
-        for k, v in pairs(Player.PlayerData.items) do
-            if Player.PlayerData.items[k] ~= nil then
-                if Config.Sell[Player.PlayerData.items[k].name] ~= nil then
-                    price = price + (Config.Sell[Player.PlayerData.items[k].name].price * Player.PlayerData.items[k].amount)
-                    Player.Functions.RemoveItem(Player.PlayerData.items[k].name, Player.PlayerData.items[k].amount, k)
-                    TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items[Player.PlayerData.items[k].name], "remove")
-                end
-            end
+    local xPlayer = ESX.GetPlayerFromId(source)
+    for k,v in pairs(Config.Sell) do 
+        local item = xPlayer.getInventoryItem(k)
+        if item and item.count >= 1 then
+            price = price + (v * item.count)
+            xPlayer.removeInventoryItem(k, item.count)
         end
-        Player.Functions.AddMoney("cash", price)
-        TriggerClientEvent('QBCore:Notify', source, Config.Text["successfully_sold"])
-	end
-end)
-
-RegisterNetEvent('tr-mining:BuyPickaxe', function()
-    local source = source
-    local Player = QBCore.Functions.GetPlayer(tonumber(source))
-    local TRClassicPickaxe = MiningJob.PickAxePrice
-    local pickaxe = Player.Functions.GetItemByName('mining_pickaxe')
-    if not pickaxe then
-        Player.Functions.AddItem('mining_pickaxe', 1)
-        TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items['mining_pickaxe'], "add")
-        Player.Functions.RemoveMoney("cash", TRClassicPickaxe)
-        TriggerClientEvent('QBCore:Notify', source, Config.Text["Pickaxe_Bought"])
-    elseif pickaxe then
-        TriggerClientEvent('QBCore:Notify', source, Config.Text["Pickaxe_Check"], 'error')
+    end
+    if price > 0 then
+        xPlayer.addMoney(price)
+        xPlayer.showNotification(Config.Alerts["successfully_sold"], true, false, 140)
+    else
+        xPlayer.showNotification(Config.Alerts["no_item"])
     end
 end)
 
-QBCore.Functions.CreateCallback('tr-mining:pickaxe', function(source, cb)
-    local Player = QBCore.Functions.GetPlayer(source)
-    if Player ~= nil then
-        if Player.Functions.GetItemByName("mining_pickaxe") ~= nil then
+RegisterNetEvent('esx-mining:BuyPickaxe', function()
+    local source = source
+    local xPlayer = ESX.GetPlayerFromId(source)
+    local pickaxe = xPlayer.getInventoryItem('mining_pickaxe').count
+    if pickaxe < 1 then
+        xPlayer.addInventoryItem('mining_pickaxe', 1)
+        xPlayer.removeMoney(MiningJob.PickAxePrice)
+        xPlayer.showNotification(Config.Text["Pickaxe_Bought"])
+    else
+        xPlayer.showNotification(Config.Text["Pickaxe_Check"])
+    end
+end)
+
+ESX.RegisterServerCallback('esx-mining:pickaxe', function(source, cb)
+    local xPlayer = ESX.GetPlayerFromId(source)
+    if xPlayer then
+        if xPlayer.getInventoryItem("mining_pickaxe").count >= 1 then
             cb(true)
         else
             cb(false)
@@ -53,25 +50,23 @@ QBCore.Functions.CreateCallback('tr-mining:pickaxe', function(source, cb)
     end
 end)
 
-RegisterNetEvent('tr-mining:BuyWash', function()
+RegisterNetEvent('esx-mining:BuyWash', function()
     local source = source
-    local Player = QBCore.Functions.GetPlayer(tonumber(source))
-    local TRClassicPan = MiningJob.WashPanPrice
-    local pan = Player.Functions.GetItemByName('mining_pan')
-    if not pan then
-        Player.Functions.AddItem('mining_pan', 1)
-        TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items['mining_pan'], "add")
-        Player.Functions.RemoveMoney("cash", TRClassicPan)
-        TriggerClientEvent('QBCore:Notify', source, Config.Text["Pan_Bought"])
-    elseif pan then
-        TriggerClientEvent('QBCore:Notify', source, Config.Text["Pan_check"], 'error')
+    local xPlayer = ESX.GetPlayerFromId(source)
+    local pan = xPlayer.getInventoryItem("mining_pan").count
+    if pan < 1 then
+        xPlayer.addInventoryItem('mining_pan', 1)
+        xPlayer.removeMoney(MiningJob.WashPanPrice)
+        xPlayer.showNotification(Config.Text["Pan_Bought"])
+    else
+        xPlayer.showNotification(Config.Text["Pan_check"])
     end
 end)
 
-QBCore.Functions.CreateCallback('tr-mining:washpan', function(source, cb)
-    local Player = QBCore.Functions.GetPlayer(source)
-    if Player ~= nil then
-        if Player.Functions.GetItemByName("mining_pan") ~= nil then
+ESX.RegisterServerCallback('esx-mining:washpan', function(source, cb)
+    local xPlayer = ESX.GetPlayerFromId(source)
+    if xPlayer then
+        if xPlayer.getInventoryItem("mining_pan").count >= 1 then
             cb(true)
         else
             cb(false)
@@ -79,47 +74,42 @@ QBCore.Functions.CreateCallback('tr-mining:washpan', function(source, cb)
     end
 end)
 
-RegisterServerEvent('tr-mining:receivedStone', function()
+RegisterServerEvent('esx-mining:receivedStone', function()
     local source = source
-    local Player = QBCore.Functions.GetPlayer(tonumber(source))
+    local xPlayer = ESX.GetPlayerFromId(source)
     local mineStone = math.random(MiningJob.StoneMin, MiningJob.StoneMax)
-    Player.Functions.AddItem('mining_stone', mineStone)
-    TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items['mining_stone'], "add")
+    print(mineStone)
+    xPlayer.addInventoryItem('mining_stone', mineStone)
 end)
 
-RegisterNetEvent('tr-mining:receivedReward', function()
+RegisterNetEvent('esx-mining:receivedReward', function()
     local source = source
-    local Player = QBCore.Functions.GetPlayer(tonumber(source))
-    local minerstone = Player.Functions.GetItemByName('mining_stone')
+    local xPlayer = ESX.GetPlayerFromId(source)
+    local minerstone = xPlayer.getInventoryItem("mining_stone")
     local ChanceItem = MiningMaterial[math.random(1, #MiningMaterial)]
-    if not minerstone then
-        TriggerClientEvent('QBCore:Notify', source, Config.Text['error_minerstone'])
-    end
-    local amount = minerstone.amount
+
+    local amount = minerstone.count
     if amount >= 1 then
         amount = 1
     else
         return false
     end
-    if not Player.Functions.RemoveItem('mining_stone', amount) then
-        TriggerClientEvent('QBCore:Notify', source, Config.Text['error_minerstone'])
+
+    if minerstone.count >= amount then 
+        xPlayer.removeInventoryItem('minerstone', amount)
+        xPlayer.addInventoryItem(ChanceItem[1], ChanceItem[2])
     end
-    TriggerClientEvent('invenotry:client:ItemBox', source, QBCore.Shared.Items['error_minerstone'], "remove")
-    Wait(1000)
-    TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items[ChanceItem[1]], "add")
-    Player.Functions.AddItem(ChanceItem[1], ChanceItem[2] )
-    
 end)
 
-RegisterNetEvent('tr-mining:setMiningStage', function(stage, state, k)
+RegisterNetEvent('esx-mining:setMiningStage', function(stage, state, k)
     Config.MiningLocation[k][stage] = state
-    TriggerClientEvent('tr-mining:getMiningstage', -1, stage, state, k)
+    TriggerClientEvent('esx-mining:getMiningstage', -1, stage, state, k)
 end)
 
-QBCore.Functions.CreateCallback('tr-mining:stonesbruf', function(source, cb)
-    local Player = QBCore.Functions.GetPlayer(source)
-    if Player ~= nil then
-        if Player.Functions.GetItemByName("mining_stone") ~= nil then
+ESX.RegisterServerCallback('esx-mining:stonesbruf', function(source, cb)
+    local xPlayer = ESX.GetPlayerFromId(source)
+    if xPlayer then
+        if xPlayer.getInventoryItem("mining_stone").count >= 1 then
             cb(true)
         else
             cb(false)
@@ -128,54 +118,45 @@ QBCore.Functions.CreateCallback('tr-mining:stonesbruf', function(source, cb)
 end)
 
 
-RegisterNetEvent('tr-mining:setMiningTimer', function()
+RegisterNetEvent('esx-mining:setMiningTimer', function()
     if not mining then
         mining = true
         CreateThread(function()
             Wait(Config.Timeout)
             for k, v in pairs(Config.MiningLocations) do
                 Config.MiningLocations[k]["isMined"] = false
-                TriggerClientEvent('tr-mining:getMiningstage', -1, 'isMined', false, k)
+                TriggerClientEvent('esx-mining:getMiningstage', -1, 'isMined', false, k)
             end
             mining = false
         end)
     end
 end)
 
-RegisterServerEvent('tr-mining:IronBar', function()
+RegisterServerEvent('esx-mining:IronBar', function()
     local source = source
-    local Player = QBCore.Functions.GetPlayer(tonumber(source))
-    local TRIronCheck = Player.Functions.GetItemByName('mining_ironfragment')
+    local xPlayer = ESX.GetPlayerFromId(source)
+    local IronCheck = xPlayer.getInventoryItem('mining_ironfragment')
     local IronSmeltAmount = math.random(MiningJob.SmeltIronMin, MiningJob.SmeltIronMax)
     local IronBarsReceived = math.random(MiningJob.IronBarsMin, MiningJob.IronBarsMax)
-    if not TRIronCheck then 
-        TriggerClientEvent('QBCore:Notify', source, Config.Text['error_ironCheck'])
-        return false
-    end
 
-    local amount = TRIronCheck.amount
+    local amount = IronCheck.count
     if amount >= 1 then
         amount = IronSmeltAmount
     else
       return false
     end
     
-    if not Player.Functions.RemoveItem('mining_ironfragment', amount) then 
-        TriggerClientEvent('QBCore:Notify', source, Config.Text['itemamount'])
-        return false 
+    if IronCheck.count >= amount then 
+        xPlayer.removeInventoryItem('mining_ironfragment', amount)
+        xPlayer.addInventoryItem('mining_ironbar', IronBarsReceived)
+        xPlayer.showNotification(Config.Text["ironSmelted"] ..IronSmeltAmount.. Config.Text["ironSmeltedMiddle"] ..IronBarsReceived.. Config.Text["ironSmeltedEnd"])
     end
-
-    TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items['mining_ironfragment'], "remove")
-    TriggerClientEvent('QBCore:Notify', source, Config.Text["ironSmelted"] ..IronSmeltAmount.. Config.Text["ironSmeltedMiddle"] ..IronBarsReceived.. Config.Text["ironSmeltedEnd"])
-    Wait(750)
-    Player.Functions.AddItem('mining_ironbar', IronBarsReceived)
-    TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items['mining_ironbar'], "add")
 end)
 
-QBCore.Functions.CreateCallback('tr-mining:IronCheck', function(source, cb)
-    local Player = QBCore.Functions.GetPlayer(source)
-    if Player ~= nil then
-        if Player.Functions.GetItemByName("mining_ironfragment") ~= nil then
+ESX.RegisterServerCallback('esx-mining:IronCheck', function(source, cb)
+    local xPlayer = ESX.GetPlayerFromId(source)
+    if xPlayer then
+        if xPlayer.getInventoryItem("mining_ironfragment").count >= 1 then
             cb(true)
         else
             cb(false)
@@ -183,70 +164,52 @@ QBCore.Functions.CreateCallback('tr-mining:IronCheck', function(source, cb)
     end
 end)
 
-RegisterServerEvent('tr-mining:CopperBar', function()
+RegisterServerEvent('esx-mining:CopperBar', function()
     local source = source
-    local Player = QBCore.Functions.GetPlayer(tonumber(source))
-    local TRCopperBars = Player.Functions.GetItemByName('mining_copperfragment')
+    local xPlayer = ESX.GetPlayerFromId(source)
+    local CopperBars = xPlayer.getInventoryItem('mining_copperfragment')
     local CopperSmeltAmount = math.random(MiningJob.SmeltCopperMin, MiningJob.SmeltCopperMin)
     local CopperBarsReceived = math.random(MiningJob.CopperBarsMin, MiningJob.CopperBarsMax)
-    if not TRCopperBars then 
-        TriggerClientEvent('QBCore:Notify', source, Config.Text['error_copperCheck'])
-        return false
-    end
 
-    local amount = TRCopperBars.amount
+    local amount = CopperBars.count
     if amount >= 1 then
         amount = CopperSmeltAmount
     else
       return false
     end
     
-    if not Player.Functions.RemoveItem('mining_copperfragment', amount) then 
-        TriggerClientEvent('QBCore:Notify', source, Config.Text['itemamount'])
-        return false 
+    if CopperBars.count >= amount then 
+        xPlayer.removeInventoryItem('mining_copperfragment', amount)
+        xPlayer.addInventoryItem('mining_copperbar', CopperBarsReceived)
+        xPlayer.showNotification(Config.Text["CopperSmelted"] ..CopperSmeltAmount.. Config.Text["CopperSmeltedMiddle"] ..CopperBarsReceived.. Config.Text["CopperSmeltedEnd"])
     end
-
-    TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items['mining_copperfragment'], "remove")
-    TriggerClientEvent('QBCore:Notify', source, Config.Text["CopperSmelted"] ..CopperSmeltAmount.. Config.Text["CopperSmeltedMiddle"] ..CopperBarsReceived.. Config.Text["CopperSmeltedEnd"])
-    Wait(750)
-    Player.Functions.AddItem('mining_copperbar', CopperBarsReceived)
-    TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items['mining_copperbar'], "add")
 end)
 
-RegisterServerEvent('tr-mining:GoldBar', function()
+RegisterServerEvent('esx-mining:GoldBar', function()
     local source = source
-    local Player = QBCore.Functions.GetPlayer(tonumber(source))
-    local TRGoldenTicket = Player.Functions.GetItemByName('mining_goldnugget')
-    local GoldSmeltAmount = math.random(MiningJob.SmeltGoldMin, MiningJob.SmeltGoldMax)
-    local GoldBarRecevied = math.random(MiningJob.GoldBarsMin, MiningJob.GoldBarsMax)
-    if not TRGoldenTicket then 
-        TriggerClientEvent('QBCore:Notify', source, Config.Text['error_copperCheck'])
-        return false
-    end
+    local xPlayer = ESX.GetPlayerFromId(source)
+    local Gold = xPlayer.getInventoryItem('mining_goldnugget')
+    local GoldSmeltAmount = math.random(MiningJob.SmeltCopperMin, MiningJob.SmeltCopperMin)
+    local GoldBarsReceived = math.random(MiningJob.CopperBarsMin, MiningJob.CopperBarsMax)
 
-    local amount = TRGoldenTicket.amount
+    local amount = Gold.count
     if amount >= 1 then
         amount = GoldSmeltAmount
     else
       return false
     end
     
-    if not Player.Functions.RemoveItem('mining_goldnugget', amount) then 
-        TriggerClientEvent('QBCore:Notify', source, Config.Text['itemamount'])
-        return false 
+    if Gold.count >= amount then 
+        xPlayer.removeInventoryItem('mining_goldnugget', amount)
+        xPlayer.addInventoryItem('mining_goldbar', CopperBarsReceived)
+        xPlayer.showNotification(Config.Text["GoldSmelted"] ..CopperSmeltAmount.. Config.Text["GoldSmeltedMiddle"] ..CopperBarsReceived.. Config.Text["GoldSmeltedEnd"])
     end
-
-    TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items['mining_goldnugget'], "remove")
-    TriggerClientEvent('QBCore:Notify', source, Config.Text["GoldSmelted"] ..GoldSmeltAmount.. Config.Text["GoldSmeltedMiddle"] ..GoldBarRecevied.. Config.Text["GoldSmeltedEnd"])
-    Wait(750)
-    Player.Functions.AddItem('mining_goldbar', GoldBarRecevied)
-    TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items['mining_goldbar'], "add")
 end)
 
-QBCore.Functions.CreateCallback('tr-mining:IronCheck', function(source, cb)
-    local Player = QBCore.Functions.GetPlayer(source)
-    if Player ~= nil then
-        if Player.Functions.GetItemByName("mining_ironfragment") ~= nil then
+ESX.RegisterServerCallback('esx-mining:IronCheck', function(source, cb)
+    local xPlayer = ESX.GetPlayerFromId(source)
+    if xPlayer ~= nil then
+        if xPlayer.getInventoryItem("mining_ironfragment").count >= 1 then
             cb(true)
         else
             cb(false)
@@ -254,20 +217,21 @@ QBCore.Functions.CreateCallback('tr-mining:IronCheck', function(source, cb)
     end
 end)
 
-QBCore.Functions.CreateCallback('tr-mining:GoldCheck', function(source, cb)
-    local Player = QBCore.Functions.GetPlayer(source)
-    if Player ~= nil then
-        if Player.Functions.GetItemByName("mining_goldnugget") ~= nil then
+ESX.RegisterServerCallback('esx-mining:GoldCheck', function(source, cb)
+    local xPlayer = ESX.GetPlayerFromId(source)
+    if xPlayer ~= nil then
+        if xPlayer.getInventoryItem("mining_goldnugget").count >= 1 then
             cb(true)
         else
             cb(false)
         end
     end
 end)
-QBCore.Functions.CreateCallback('tr-mining:CopperCheck', function(source, cb)
-    local Player = QBCore.Functions.GetPlayer(source)
-    if Player ~= nil then
-        if Player.Functions.GetItemByName("mining_copperfragment") ~= nil then
+
+ESX.RegisterServerCallback('esx-mining:CopperCheck', function(source, cb)
+    local xPlayer = ESX.GetPlayerFromId(source)
+    if xPlayer ~= nil then
+        if xPlayer.getInventoryItem("mining_copperfragment").count >= 1 then
             cb(true)
         else
             cb(false)
@@ -279,5 +243,17 @@ AddEventHandler('onResourceStart', function(resourceName)
     if (GetCurrentResourceName() ~= resourceName) then
         return
     end
-    print("^0\n ------------------------------------------------------------------------------------------------------------------------------\n ^1\n ████████╗██████╗       ███╗   ███╗██╗███╗   ██╗██╗███╗   ██╗ ██████╗ \t \n ╚══██╔══╝██╔══██╗      ████╗ ████║██║████╗  ██║██║████╗  ██║██╔════╝ \t \n    ██║   ██████╔╝█████╗██╔████╔██║██║██╔██╗ ██║██║██╔██╗ ██║██║  ███╗\t \n     ██║   ██╔══██╗╚════╝██║╚██╔╝██║██║██║╚██╗██║██║██║╚██╗██║██║   ██║ \t \n    ██║   ██║  ██║      ██║ ╚═╝ ██║██║██║ ╚████║██║██║ ╚████║╚██████╔╝\t \n    ╚═╝   ╚═╝  ╚═╝      ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝╚═╝  ╚═══╝ ╚═════╝ \t   \n    \n      \n                   ^1Discord ^5 --> ^0https://discord.gg/zRCdhENsHG                         ^1Author^5: ^0TRClassic#0001 \n \n------------------------------------------------------------------------------------------------------------------------------ \n ")
+    print("--------------------------------------------------------------------------")
+    print("^4███████╗ ██████╗██╗  ██╗  ███╗   ███╗██╗███╗  ██╗██╗███╗  ██╗ ██████╗   |")
+    print("^4██╔════╝██╔════╝╚██╗██╔╝  ████╗ ████║██║████╗ ██║██║████╗ ██║██╔════╝   |")
+    print("^4█████╗  ╚█████╗  ╚███╔╝   ██╔████╔██║██║██╔██╗██║██║██╔██╗██║██║  ██╗   |")
+    print("^3██╔══╝   ╚═══██╗ ██╔██╗   ██║╚██╔╝██║██║██║╚████║██║██║╚████║██║  ╚██╗  |")
+    print("^3███████╗██████╔╝██╔╝╚██╗  ██║ ╚═╝ ██║██║██║  ███║██║██║ ╚███║╚██████╔╝  |")
+    print("^3╚══════╝╚═════╝ ╚═╝  ╚═╝  ╚═╝     ╚═╝╚═╝╚═╝  ╚══╝╚═╝╚═╝  ╚══╝ ╚═════╝   |")
+    print("^7----------------------------------------------------------------------------------")
+    print("^7 Converted By Mycroft (Manager of ESX-Framework) & Benzo (ESX Community Manager)  |")
+    print("^7              Website: https://docs.esx-framework.org                             |")
+    print("^7                    TRClassic: https://dsc.gg/trclassic                           |")
+    print("^1     Original Script: https://github.com/trclassic92/tr-mining                    ^7|")
+    print("----------------------------------------------------------------------------------")
 end)

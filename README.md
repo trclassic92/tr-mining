@@ -1,14 +1,5 @@
-This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0
-International License][cc-by-nc-sa].
-
-[![CC BY-NC-SA 4.0][cc-by-nc-sa-image]][cc-by-nc-sa]
-
-[cc-by-nc-sa]: http://creativecommons.org/licenses/by-nc-sa/4.0/
-[cc-by-nc-sa-image]: https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png
-[cc-by-nc-sa-shield]: https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg
-
-# tr-mining
-Mining Script for QBCore
+# ESX-Mining
+Mining Script for ESX
 
 ## Whats included
 - Easy to use config
@@ -19,11 +10,8 @@ Mining Script for QBCore
 - DrawtextUi & Target Combined
 
 ## Dependencies
-- [qb-core](https://github.com/qbcore-framework/qb-core) **Lastest Core with DrawtextUI**
-- [qb-target](https://github.com/BerkieBb/qb-target)
-- [qb-menu](https://github.com/qbcore-framework/qb-menu)
+- [qb-core](https://github.com/qbcore-framework/qb-core)
 - [PolyZone](https://github.com/mkafrin/PolyZone)
-- [nw-mine](https://github.com/Nowimps8/nw_mine)
 
 ## Installation
 

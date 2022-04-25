@@ -1,11 +1,10 @@
-local QBCore = exports['qb-core']:GetCoreObject()
-local ClassicMiner = MiningLocation.coords
+local ClassicMiner = Config.Blips.MiningLocation.coords
 local ClassicPed = MiningJob.Miner
 local ClassicMHash = MiningJob.MinerHash
 local ClasWashericPed = MiningJob.Washer
 local notClasHashsic = MiningJob.WasherHash
-local TRonTop = WashLocation.coords
-local ClassicSeller = SellLocation.coords
+local TRonTop = Config.Blips.WashLocation.coords
+local ClassicSeller = Config.Blips.SellLocation.coords
 
 CreateThread(function()
     RequestModel( GetHashKey( ClassicPed ) )
