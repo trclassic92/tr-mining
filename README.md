@@ -10,11 +10,12 @@ Mining Script for ESX
 - DrawtextUi & Target Combined
 
 ## Dependencies
-- [qb-core](https://github.com/qbcore-framework/qb-core)
+- [Esx-Legacy](https://github.com/esx-framework/esx-legacy)
+- [Qtarget](https://github.com/overextended/qtarget)
 - [PolyZone](https://github.com/mkafrin/PolyZone)
 
 ## Installation
-
+Download the resource, rename it from esx-mining-main to esx-mining, drag it into your resource folder. ensure it in your server.cfg, dont forget to run the items.sql into the database
 
 ## Preview Pictures
 - [Youtube Video](https://youtu.be/9VXjTrUdjfc)
@@ -27,7 +28,11 @@ Mining Script for ESX
 ![Preview Screenshot](https://i.imgur.com/VJCk6cx.jpeg)
 
 ## Discord
-- [Join Discord](https://discord.gg/zRCdhENsHG)
+- [ESX](https://discord.com/invite/VKX6DHVyhV)
+- [Join Classics Discord](https://discord.gg/zRCdhENsHG)
 
 ## Support The Script
-- [Ko-fi Link](https://ko-fi.com/trclassic)
+- [Ko-fi Link for Classic](https://ko-fi.com/trclassic)
+
+## Credits
+[Classic](https://github.com/trclassic92)
