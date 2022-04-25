@@ -133,8 +133,8 @@ RegisterNetEvent('tr-mining:setMiningTimer', function()
         mining = true
         CreateThread(function()
             Wait(Config.Timeout)
-            for k, v in pairs(Config.MiningLocations) do
-                Config.MiningLocations[k]["isMined"] = false
+            for k, v in pairs(Config.MiningLocation) do
+                Config.MiningLocation[k]["isMined"] = false
                 TriggerClientEvent('tr-mining:getMiningstage', -1, 'isMined', false, k)
             end
             mining = false
