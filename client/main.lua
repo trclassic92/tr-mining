@@ -149,13 +149,13 @@ RegisterNetEvent('tr-mining:smeltmenu', function()
     exports['qb-menu']:openMenu(smeltMenu)
   end)
 
-local inMiningZone = false
+local listen = false
 local function MiningKeyBind(mining)
-  isMiningZone = true
+  listen = true
   CreateThread(function()
-    while isMiningZone do
+    while listen do
       if IsControlJustPressed(0, 38) then
-        isMiningZone = false
+        listen = false
         if not Config.MiningLocation[mining]["isMined"] and not Config.MiningLocation[mining]["isOccupied"] then
           exports['qb-core']:KeyPressed()
           QBCore.Functions.TriggerCallback('tr-mining:pickaxe', function(PickAxe)
@@ -289,16 +289,14 @@ CreateThread(function()
     })
     shaftZones:onPlayerInOut(function(isPointInside)
       if isPointInside then
-        miningZone = true
         exports['qb-core']:DrawText(Config.Text['MiningAlert'], 'left')
         Wait(1500)
-        exports['qb-core']:HideText() 
+        exports['qb-core']:HideText()
         Wait(1000)
         exports['qb-core']:DrawText(Config.Text['StartMining'],'left')
         MiningKeyBind(k)
       else
-        inMiningZone = false
-        miningZone = false
+        listen = false
         exports['qb-core']:HideText()
       end
     end)
