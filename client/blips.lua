@@ -31,7 +31,7 @@ if Config.UseBlips then
         BeginTextCommandSetBlipName("STRING")
         AddTextComponentSubstringPlayerName(SmeltLocation.BlipLabel)
         EndTextCommandSetBlipName(SmeltBlip)
-        
+
         SellerBlip = AddBlipForCoord(SellLocation.coords)
         SetBlipSprite (SellerBlip, SellLocation.SetBlipSprite)
         SetBlipDisplay(SellerBlip, SellLocation.SetBlipDisplay)
