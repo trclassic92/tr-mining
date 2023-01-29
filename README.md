@@ -92,7 +92,7 @@ exports['qb-core']:KeyPressed()
 ![Preview Screenshot](https://i.imgur.com/VJCk6cx.jpeg)
 
 ## Discord
-- [Join Discord](https://discord.gg/zRCdhENsHG)
+- [Join Discord](https://discord.gg/T2xX5WwmEX)
 
 ## Support The Script
 - [Ko-fi Link](https://ko-fi.com/trclassic)
